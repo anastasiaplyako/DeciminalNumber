@@ -1,6 +1,6 @@
 public class DeciminalNumber {
-    String whole ;
-    String fraction ;
+    String whole;
+    String fraction;
 
     public DeciminalNumber(String whole, String fraction) {
         if (fraction.length() > 1) fraction = deleteZero(fraction);
@@ -35,46 +35,45 @@ public class DeciminalNumber {
     }
 
     // вычитание чисел
-    public DeciminalNumber subtraction(DeciminalNumber other){
+    public DeciminalNumber subtraction(DeciminalNumber other) {
         String res = "";
         String fracMin = "";
         String sign = "";
-        DeciminalNumber input = new DeciminalNumber(whole,fraction);
-        DeciminalNumber maxObject = findMaxObject(input,other);
+        DeciminalNumber input = new DeciminalNumber(whole, fraction);
+        DeciminalNumber maxObject = findMaxObject(input, other);
         if (whole.charAt(0) == '-' && other.whole.charAt(0) != '-') {
             other.whole = "-" + other.whole;
             return addition(other);
         }
         if (whole.charAt(0) != '-' && other.whole.charAt(0) == '-') {
-            other.whole = removeCharAt(other.whole,0);
+            other.whole = removeCharAt(other.whole, 0);
             return addition(other);
         }
         if (whole.charAt(0) == '-' && other.whole.charAt(0) == '-') {
             sign = "";
-            if (equalsForDeciminal(input,maxObject));
+            if (equalsForDeciminal(input, maxObject)) ;
             sign = "-";
-            other.whole = removeCharAt(other.whole,0);
-            DeciminalNumber temp = new DeciminalNumber(removeCharAt(whole,0), fraction).subtraction(other);
+            other.whole = removeCharAt(other.whole, 0);
+            DeciminalNumber temp = new DeciminalNumber(removeCharAt(whole, 0), fraction).subtraction(other);
             return new DeciminalNumber(sign + temp.whole, temp.fraction);
         }
-        if (equalsForDeciminal(maxObject,other) && other.whole.charAt(0)!='-')
+        if (equalsForDeciminal(maxObject, other) && other.whole.charAt(0) != '-')
             sign = "-";
         String fracMax = maxObject.fraction;
-        if (fracMax.equals(fraction)){
+        if (fracMax.equals(fraction)) {
             fracMin = other.fraction;
-        }
-        else fracMin = fraction;
-        if (whole.charAt(0) == '-' && other.whole.charAt(0) == '-')  {
-            if (maxObject.whole.charAt(0) == '-' && equalsForDeciminal(new DeciminalNumber(whole,fraction),maxObject))
+        } else fracMin = fraction;
+        if (whole.charAt(0) == '-' && other.whole.charAt(0) == '-') {
+            if (maxObject.whole.charAt(0) == '-' && equalsForDeciminal(new DeciminalNumber(whole, fraction), maxObject))
                 sign = "-";
         }
-        if (fracMin.length() > fracMax.length()) fracMax = addZero(fracMax,fracMin);
-        if(fracMin.length() < fracMax.length()) fracMin = addZero(fracMin,fracMax);
+        if (fracMin.length() > fracMax.length()) fracMax = addZero(fracMax, fracMin);
+        if (fracMin.length() < fracMax.length()) fracMin = addZero(fracMin, fracMax);
         int length = fracMax.length();
         int count = 0;
         while (length > 0) {
-            int tmpMaxInt = Integer.parseInt(fracMax.substring(length -1,length));
-            int tmpMinInt = Integer.parseInt(fracMin.substring(length -1,length));
+            int tmpMaxInt = Integer.parseInt(fracMax.substring(length - 1, length));
+            int tmpMinInt = Integer.parseInt(fracMin.substring(length - 1, length));
             if (tmpMaxInt - count < tmpMinInt) {
                 res = String.valueOf(tmpMaxInt + 10 - tmpMinInt - count) + res;
                 count = 1;
@@ -86,38 +85,38 @@ public class DeciminalNumber {
         }
         int wholeInt = Integer.parseInt(whole);
         int wholeOtherInt = Integer.parseInt(other.whole);
-        String resWhole = String.valueOf(Math.max(wholeInt,wholeOtherInt) - Math.min(wholeInt,wholeOtherInt) - count);
-        return  new DeciminalNumber(sign + resWhole, res);
+        String resWhole = String.valueOf(Math.max(wholeInt, wholeOtherInt) - Math.min(wholeInt, wholeOtherInt) - count);
+        return new DeciminalNumber(sign + resWhole, res);
     }
 
     //сложение чисел
-    public DeciminalNumber addition(DeciminalNumber other){
+    public DeciminalNumber addition(DeciminalNumber other) {
         String res = "";
         String sign = "";
         String wholeCopy = whole;
-        DeciminalNumber input = new DeciminalNumber(whole,fraction);
+        DeciminalNumber input = new DeciminalNumber(whole, fraction);
         if (whole.charAt(0) == '-' && other.whole.charAt(0) != '-') {
             sign = "";
-            if (equalsForDeciminal(findMaxObject(input,other),input))
+            if (equalsForDeciminal(findMaxObject(input, other), input))
                 sign = "-";
-            DeciminalNumber conclus= new DeciminalNumber(removeCharAt(whole,0), fraction).subtraction(other);
+            DeciminalNumber conclus = new DeciminalNumber(removeCharAt(whole, 0), fraction).subtraction(other);
             return new DeciminalNumber(sign + conclus.whole, conclus.fraction);
         }
         if (whole.charAt(0) != '-' && other.whole.charAt(0) == '-') {
-            other.whole = removeCharAt(other.whole,0);
+            other.whole = removeCharAt(other.whole, 0);
             return subtraction(other);
         }
-        if (other.whole.charAt(0) == '-' && whole.charAt(0) == '-')  {
+        if (other.whole.charAt(0) == '-' && whole.charAt(0) == '-') {
             sign = "-";
-            other.whole = other.whole.substring(1,other.whole.length());
-            wholeCopy = whole.substring(1,whole.length());
+            other.whole = other.whole.substring(1, other.whole.length());
+            wholeCopy = whole.substring(1, whole.length());
         }
-        if (fraction.length() > other.fraction.length()) other.fraction = addZero(other.fraction,fraction);
-        if (fraction.length() < other.fraction.length()) fraction = addZero(fraction,other.fraction);
+        if (fraction.length() > other.fraction.length()) other.fraction = addZero(other.fraction, fraction);
+        if (fraction.length() < other.fraction.length()) fraction = addZero(fraction, other.fraction);
         int length = fraction.length();
         int count = 0;
         while (length > 0) {
-            String tmpThis = fraction.substring(length - 1,length);
+            String tmpThis = fraction.substring(length - 1, length);
             String tmpOther = other.fraction.substring(length - 1, length);
             int tmpInt = Integer.parseInt(tmpThis);
             int tmpOtherInt = Integer.parseInt(tmpOther);
@@ -136,17 +135,17 @@ public class DeciminalNumber {
         String res = "";
         String wholeCopy = whole;
         String sign = "";
-        if (whole.charAt(0) != '-' && other.whole.charAt(0) == '-'){
-            other.whole = removeCharAt(other.whole,0);
+        if (whole.charAt(0) != '-' && other.whole.charAt(0) == '-') {
+            other.whole = removeCharAt(other.whole, 0);
             sign = "-";
         }
-        if (other.whole.charAt(0) != '-' && whole.charAt(0) == '-'){
-            wholeCopy = removeCharAt(whole,0);
+        if (other.whole.charAt(0) != '-' && whole.charAt(0) == '-') {
+            wholeCopy = removeCharAt(whole, 0);
             sign = "-";
         }
-        if (other.whole.charAt(0) == '-' && whole.charAt(0) == '-'){
-            other.whole = removeCharAt(other.whole,0);
-            wholeCopy = removeCharAt(whole,0);
+        if (other.whole.charAt(0) == '-' && whole.charAt(0) == '-') {
+            other.whole = removeCharAt(other.whole, 0);
+            wholeCopy = removeCharAt(whole, 0);
         }
         String factor1 = wholeCopy + fraction;
         String factor2 = other.whole + other.fraction;
@@ -157,13 +156,13 @@ public class DeciminalNumber {
             mul = "0" + mul;
         }
         Integer length = Math.abs(mul.length() - other.fraction.length() - fraction.length());
-        String mulWhole = mul.substring(0,length);
-        String mulFraction = mul.substring(length,mul.length());
-        return new DeciminalNumber( sign + mulWhole,mulFraction);
+        String mulWhole = mul.substring(0, length);
+        String mulFraction = mul.substring(length, mul.length());
+        return new DeciminalNumber(sign + mulWhole, mulFraction);
     }
 
     //округление чисел
-    public  DeciminalNumber roouningOfNumber(Integer n ){
+    public DeciminalNumber roouningOfNumber(Integer n) {
         Integer count = 0;
         Integer length = fraction.length();
         String fractionCopy = fraction;
@@ -171,13 +170,13 @@ public class DeciminalNumber {
             Integer strInt = Integer.parseInt(fractionCopy.substring(length - 1, length));
             if (strInt + count < 5) count = 0;
             else count = 1;
-            fractionCopy = removeCharAt(fractionCopy,length - 1);
+            fractionCopy = removeCharAt(fractionCopy, length - 1);
             length--;
         }
         length = fractionCopy.length();
         Integer tmp = Integer.parseInt(fractionCopy.substring(length - 1, length)) + count;
-        fractionCopy = removeCharAt(fractionCopy,length - 1);
-        return new DeciminalNumber(whole,fractionCopy + tmp);
+        fractionCopy = removeCharAt(fractionCopy, length - 1);
+        return new DeciminalNumber(whole, fractionCopy + tmp);
     }
 
     //удаление символа
@@ -191,16 +190,15 @@ public class DeciminalNumber {
         int length = fraction.length();
         for (int i = 0; i < length; i++) {
             if (fraction.substring(length - 1, length).equals("0")) {
-                res =  removeCharAt(res,length - 1);
+                res = removeCharAt(res, length - 1);
                 length--;
-            }
-            else break;
+            } else break;
         }
         return res;
     }
 
     //добавление нулей
-    public String addZero(String num1, String num2){ // num1 - добавляем нули
+    public String addZero(String num1, String num2) { // num1 - добавляем нули
         String tmp = num1;
         for (int i = 0; i < Math.abs(num2.length() - tmp.length()); i++) {
             num1 = num1 + "0";
@@ -209,17 +207,16 @@ public class DeciminalNumber {
     }
 
     //возвращает максимальный элемент в объектах
-    public DeciminalNumber findMaxObject(DeciminalNumber input,DeciminalNumber other){
+    public DeciminalNumber findMaxObject(DeciminalNumber input, DeciminalNumber other) {
         int wholeInt = Integer.parseInt(input.whole);
         int fractionInt = Integer.parseInt(input.fraction);
         int wholeOtherInt = Integer.parseInt(other.whole);
         int fractionOtherInt = Integer.parseInt(other.fraction);
-        DeciminalNumber res = new DeciminalNumber(input.whole,input.fraction);
-        if (Math.abs(wholeInt) > Math.abs(wholeOtherInt)){
-            DeciminalNumber max = new DeciminalNumber(input.whole,input.fraction);
+        DeciminalNumber res = new DeciminalNumber(input.whole, input.fraction);
+        if (Math.abs(wholeInt) > Math.abs(wholeOtherInt)) {
+            DeciminalNumber max = new DeciminalNumber(input.whole, input.fraction);
             return max;
-        }
-        else {
+        } else {
             if (Math.abs(wholeInt) < Math.abs(wholeOtherInt)) {
                 DeciminalNumber max = new DeciminalNumber(other.whole, other.fraction);
                 return max;
@@ -244,18 +241,19 @@ public class DeciminalNumber {
     }
 
     //сравнение для DeciminalNumber
-    public boolean equalsForDeciminal(DeciminalNumber this1,DeciminalNumber other){
+    public boolean equalsForDeciminal(DeciminalNumber this1, DeciminalNumber other) {
         boolean res = false;
         if (this1.whole.equals(other.whole) && this1.fraction.equals(other.fraction))
             res = true;
         return res;
     }
+
     //вычисление длины числа
-    public Integer lengthOfNumber(Integer x){
+    public Integer lengthOfNumber(Integer x) {
         Integer count = 0;
-        while (x > 0){
+        while (x > 0) {
             count++;
-            x /=10;
+            x /= 10;
         }
         return count;
     }

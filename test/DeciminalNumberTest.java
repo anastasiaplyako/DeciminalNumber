@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class DeciminalNumberTest {
 
     @Test
@@ -25,5 +27,12 @@ class DeciminalNumberTest {
         assertEquals(new DeciminalNumber("-10", "1109816"), new DeciminalNumber(-10.0908).multiplication(new DeciminalNumber(1.002)));
         assertEquals(new DeciminalNumber("0", "00018"), new DeciminalNumber(-0.001).multiplication(new DeciminalNumber(-0.18)));
 
+    }
+
+    @Test
+    public void roouningOfNumber() {
+        assertEquals(new DeciminalNumber("13", "1"), new DeciminalNumber(13.13).roouningOfNumber(1));
+        assertEquals(new DeciminalNumber("-0", "09"), new DeciminalNumber(-0.089).roouningOfNumber(2));
+        assertEquals(new DeciminalNumber("-4", "7"), new DeciminalNumber(-4.648).roouningOfNumber(1));
     }
 }
